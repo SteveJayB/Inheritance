@@ -1,68 +1,64 @@
-/**********************************************************************
-  *                             Hare                                  *
-  *                                                                   *
-  * PROGRAMMER:  (Stephen Bridgett)                                   *
-  *                                                                   *
-  * DESCRIPTION: This is a 'Hare' object that extends the Animal      *
-  *              objects. The Hare object will inherit its            *
-  *              attributes and methods.                              *
-  ********************************************************************/
-
+// The Hare class extends Animal, inheriting its properties and behaviors
 public class Hare extends Animal {
 
     /********************************************************************
-    * ATTRIBUTES                                                      *
-    ******************************************************************/
- private int napStart_;
- private int napDuration_;
- private boolean napping_;
+     * ATTRIBUTES                                                      *
+     ********************************************************************/
+    
+    private int napStart_;       // The time at which the hare starts napping
+    private int napDuration_;    // The duration for which the hare naps
+    private boolean napping_;    // Indicates if the hare is currently napping
 
-   /********************************************************************
-    * CONSTRUCTORS                                                    *
-    ******************************************************************/
+    /********************************************************************
+     * CONSTRUCTORS                                                    *
+     ********************************************************************/
 
- public Hare(String name_, 
-             double speed_, 
-             String species_, 
-             double currentPosition_, 
-             int napStart_, 
-             int napDuration_, 
-             boolean napping_){
-  super(name_, 
-        speed_, 
-        species_, 
-        currentPosition_);
-  
-  this.napStart_ = napStart_;
-  this.napDuration_ = napDuration_;
-  this.napping_ = napping_;
- }
+    // Constructor to initialize all attributes of the Hare class
+    public Hare(String name, 
+                double speed, 
+                String species, 
+                double currentPosition, 
+                int napStart, 
+                int napDuration, 
+                boolean napping) {
+        
+        super(name, speed, species, currentPosition); // Call superclass constructor
+        
+        this.napStart_ = napStart;
+        this.napDuration_ = napDuration;
+        this.napping_ = napping;
+    }
 
-   /********************************************************************
-    *   METHODS                                                       *
-    ******************************************************************/
- 
- //POLYMORPHISM//
- public void updatePosition(int time){
-  if (time == napStart_){
-   napping_ = true;
-  }
-  
-  if (time == napStart_ + napDuration_){
-   napping_ = false;    
-  }
-  
-  if (!napping_){
-   this.currentPosition = this.currentPosition + this.speed;
-  }
- }
-  /********************************************************************
-    * OUTPUT METHOD                                                   *
-    ******************************************************************/
- public void printInfo(){
-  String line_format = "%10s %10s %10s %20s %21s %n";
-  String speed_rounded = String.format("%.1f", this.speed);
-  String currPos_rounded = String.format("%.1f", this.currentPosition);
-  System.out.format(line_format, this.name, speed_rounded, this.species, currPos_rounded, "Napping: "+napping_); //POLYMORPHISM//
- } 
+    /********************************************************************
+     *   METHODS                                                       *
+     ********************************************************************/
+
+    // POLYMORPHISM: Overrides updatePosition method to include napping behavior
+    @Override
+    public void updatePosition(int time) {
+        if (time == napStart_) { // Check if it's time to start napping
+            napping_ = true;
+        }
+
+        if (time == napStart_ + napDuration_) { // Check if napping time is over
+            napping_ = false;
+        }
+
+        if (!napping_) { // If not napping, move normally
+            this.currentPosition += this.speed * time; // Multiply speed by time to correctly update position
+        }
+    }
+
+    /********************************************************************
+     * OUTPUT METHOD                                                   *
+     ********************************************************************/
+
+    // Formats and prints the hare's information, including its napping status
+    @Override
+    public void printInfo() {
+        String lineFormat = "%-10s %-10s %-10s %-10s %-15s%n"; // Adjusted for better alignment
+        String speedRounded = String.format("%.1f", this.speed); // Round speed to 1 decimal place
+        String currPosRounded = String.format("%.1f", this.currentPosition); // Round position to 1 decimal place
+        System.out.format(lineFormat, this.name, speedRounded, this.species, currPosRounded, "Napping: " + this.napping_);
+    }
 }
